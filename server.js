@@ -26,9 +26,14 @@ app.use(session({
   if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
 });
 
+// Check if apps.json exists, if not create it
+if (!fs.existsSync("data/apps.json")) {
+  const initialData = [];
+  fs.writeFileSync("data/apps.json", JSON.stringify(initialData, null, 2));
+}
+
 // Get app data
 const getApps = () => {
-  if (!fs.existsSync("data/apps.json")) return [];
   return JSON.parse(fs.readFileSync("data/apps.json", "utf-8"));
 };
 
