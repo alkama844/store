@@ -145,6 +145,20 @@ app.get("/", (req, res) => {
   res.render("index", { topApps: apps });
 });
 
+// JSON route
+app.get('/data', (req, res) => {
+  const dataPath = path.join(__dirname, 'data/data.json');
+  fs.readFile(dataPath, 'utf8', (err, jsonData) => {
+    if (err) {
+      console.error('Failed to read data.json:', err);
+      return res.status(500).json({ error: 'Failed to read data' });
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(jsonData);
+  });
+});
+
+         
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
