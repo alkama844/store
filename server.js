@@ -211,6 +211,26 @@ app.post('/admin/delete-app', (req, res) => {
   });
 });
 
+//backup
+app.get('/backup', (req, res) => {
+  const zipFileName = `backup-${Date.now()}.zip`;
+  const zipFilePath = path.join(__dirname, zipFileName);
+  const output = fs.createWriteStream(zipFilePath);
+  const archive = archiver('zip', { zlib: { level: 9 } });
+
+  output.on('close', () => {
+    res.download(zipFilePath, zipFileName, (err) => {
+      fs.unlink(zipFilePath, () => {}); // Clean up after sending
+    });
+  });
+
+  archive.on('error', err => res.status(500).send({ error: err.message }));
+
+  archive.pipe(output);
+  archive.directory('data/', 'data');
+  archive.directory('public/', 'public');
+  archive.finalize();
+});
 
          
 // Start server
