@@ -47,7 +47,8 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
     const safeName = (req.body.appFilename || "app").replace(/[^a-zA-Z0-9-_]/g, "");
-    cb(null, `${safeName}${ext}`);
+    const uniqueSuffix = Date.now(); // or use uuid for more randomness
+    cb(null, `${safeName}-${uniqueSuffix}${ext}`);
   }
 });
 const upload = multer({ storage });
