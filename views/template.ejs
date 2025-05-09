@@ -65,7 +65,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <!-- Image URL will be dynamic from server -->
+      <!-- Dynamically render the image from server -->
       <img src="<%= appIcon %>" alt="<%= appName %> Icon" class="app-icon"/>
       <div>
         <h1><%= appName %></h1>
@@ -74,6 +74,7 @@
       </div>
     </div>
     <p><strong>Description:</strong><br><%= appDescription %></p>
+    <!-- Download link -->
     <a href="<%= appLink %>" class="btn" download>Download App</a>
   </div>
 </body>
