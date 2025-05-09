@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title><%= appName %> - Download</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f9f9f9;
+      word-wrap: break-word;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #ccc;
+    }
+    .app-icon {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      word-break: break-word;
+      max-width: 100%;
+    }
+    .meta, .downloads {
+      color: #666;
+      word-break: break-word;
+    }
+    .btn {
+      background: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 15px;
+    }
+    .btn:hover {
+      background: #0056b3;
+    }
+    p {
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <!-- Image URL will be dynamic from server -->
+      <img src="<%= appIcon %>" alt="<%= appName %> Icon" class="app-icon"/>
+      <div>
+        <h1><%= appName %></h1>
+        <p class="meta">Category: <%= appCategory %></p>
+        <p class="downloads">Downloads: <%= appDownloads %></p>
+      </div>
+    </div>
+    <p><strong>Description:</strong><br><%= appDescription %></p>
+    <a href="<%= appLink %>" class="btn" download>Download App</a>
+  </div>
+</body>
+</html>
