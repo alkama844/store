@@ -5,20 +5,64 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Delete Apps - Admin Panel</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; background: #f8f9fa; }
-    h1 { text-align: center; }
-    .app-list { max-width: 600px; margin: auto; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+      background: #f1f3f5;
+      margin: 0;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #343a40;
+    }
+    .app-list {
+      max-width: 700px;
+      margin: auto;
+    }
     .app-item {
-      display: flex; justify-content: space-between; align-items: center;
-      background: white; padding: 15px; margin-bottom: 10px;
-      border: 1px solid #ccc; border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+      padding: 15px 20px;
+      margin-bottom: 12px;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      transition: box-shadow 0.2s ease;
+    }
+    .app-item:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .app-name {
+      font-size: 18px;
+      color: #212529;
+      word-break: break-word;
     }
     .delete-btn {
-      background: #dc3545; color: white;
-      padding: 6px 12px; border: none; border-radius: 5px;
+      background: #e63946;
+      color: white;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s ease;
     }
-    .delete-btn:hover { background: #c82333; }
+    .delete-btn:hover {
+      background: #c92a2a;
+    }
+    @media (max-width: 480px) {
+      .app-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .delete-btn {
+        margin-top: 10px;
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -26,8 +70,8 @@
   <div class="app-list">
     <% apps.forEach(app => { %>
       <div class="app-item">
-        <span><%= app.appName %></span>
-        <form method="POST" action="/admin/delete-app" onsubmit="return confirm('Delete <%= app.appName %>?')">
+        <span class="app-name"><%= app.appName %></span>
+        <form method="POST" action="/admin/delete-app" onsubmit="return confirm('Are you sure you want to delete <%= app.appName %>?')">
           <input type="hidden" name="filename" value="<%= app.appFilename %>" />
           <button class="delete-btn" type="submit">Delete</button>
         </form>
