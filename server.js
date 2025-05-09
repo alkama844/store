@@ -158,7 +158,41 @@ app.get('/data', (req, res) => {
     res.send(jsonData);
   });
 });
+//delete route
+app.get('/admin/delete-apps', (req, res) => {
+  const dataPath = path.join(__dirname, 'data/data.json');
+  fs.readFile(dataPath, 'utf8', (err, jsonData) => {
+    if (err) return res.status(500).send('Failed to load app list');
+    const apps = JSON.parse(jsonData);
+    res.render('delete-apps', { apps });
+  });
+});
 
+app.post('/admin/delete-app', (req, res) => {
+  const filename = req.body.filename;
+  const dataPath = path.join(__dirname, 'data/data.json');
+
+  fs.readFile(dataPath, 'utf8', (err, jsonData) => {
+    if (err) return res.status(500).send('Failed to read data');
+
+    let apps = JSON.parse(jsonData);
+    apps = apps.filter(app => app.appFilename !== filename);
+
+    fs.writeFile(dataPath, JSON.stringify(apps, null, 2), err => {
+      if (err) return res.status(500).send('Failed to delete app');
+
+      // Delete static HTML file and icon
+      const htmlPath = path.join(__dirname, 'public', `${filename}.html`);
+      const iconPath = path.join(__dirname, 'public', 'uploads', `${filename}.png`); // Adjust ext if needed
+
+      fs.unlink(htmlPath, () => {});
+      fs.unlink(iconPath, () => {});
+
+      res.redirect('/admin/delete-apps');
+    });
+  });
+});
+        
          
 // Start server
 app.listen(PORT, () => {
