@@ -32,6 +32,10 @@ if (!fs.existsSync("data/apps.json")) {
   fs.writeFileSync("data/apps.json", JSON.stringify(initialData, null, 2));
 }
 
+["public/uploads", "public/apps", "data"].forEach(folder => {
+  if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+});
+
 // Get app data
 const getApps = () => {
   return JSON.parse(fs.readFileSync("data/apps.json", "utf-8"));
@@ -100,6 +104,10 @@ app.post("/admin/add-app", isAdmin, upload.single("appIcon"), (req, res) => {
     appFilename
   } = req.body;
 
+  if (!req.file) {
+    return res.status(400).send("App icon is required.");
+  }
+
   const iconPath = `/uploads/${req.file.filename}`;
   const slug = appFilename.replace(/[^a-zA-Z0-9-_]/g, "");
 
@@ -113,19 +121,24 @@ app.post("/admin/add-app", isAdmin, upload.single("appIcon"), (req, res) => {
     appIcon: iconPath
   };
 
-  const apps = getApps();
-  apps.push(newApp);
-  fs.writeFileSync("data/apps.json", JSON.stringify(apps, null, 2));
+  try {
+    const apps = getApps();
+    apps.push(newApp);
+    fs.writeFileSync("data/apps.json", JSON.stringify(apps, null, 2));
 
-  ejs.renderFile("views/template.ejs", newApp, (err, html) => {
-    if (err) {
-      console.error("EJS render error:", err);
-      return res.status(500).send("Error generating app page");
-    }
+    ejs.renderFile("views/template.ejs", newApp, (err, html) => {
+      if (err) {
+        console.error("EJS render error:", err);
+        return res.status(500).send("Error generating app page");
+      }
 
-    fs.writeFileSync(`public/apps/${slug}.html`, html);
-    res.redirect("/");
-  });
+      fs.writeFileSync(`public/apps/${slug}.html`, html);
+      res.redirect("/");
+    });
+  } catch (err) {
+    console.error("Add-app crash:", err);
+    res.status(500).send("Something went wrong while saving the app.");
+  }
 });
 
 // Homepage route
