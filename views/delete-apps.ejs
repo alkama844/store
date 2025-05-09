@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delete Apps - Admin Panel</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f8f9fa; }
+    h1 { text-align: center; }
+    .app-list { max-width: 600px; margin: auto; }
+    .app-item {
+      display: flex; justify-content: space-between; align-items: center;
+      background: white; padding: 15px; margin-bottom: 10px;
+      border: 1px solid #ccc; border-radius: 5px;
+    }
+    .delete-btn {
+      background: #dc3545; color: white;
+      padding: 6px 12px; border: none; border-radius: 5px;
+      cursor: pointer;
+    }
+    .delete-btn:hover { background: #c82333; }
+  </style>
+</head>
+<body>
+  <h1>Delete Apps</h1>
+  <div class="app-list">
+    <% apps.forEach(app => { %>
+      <div class="app-item">
+        <span><%= app.appName %></span>
+        <form method="POST" action="/admin/delete-app" onsubmit="return confirm('Delete <%= app.appName %>?')">
+          <input type="hidden" name="filename" value="<%= app.appFilename %>" />
+          <button class="delete-btn" type="submit">Delete</button>
+        </form>
+      </div>
+    <% }); %>
+  </div>
+</body>
+</html>
