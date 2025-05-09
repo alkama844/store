@@ -148,10 +148,11 @@ app.get("/", (req, res) => {
 // JSON route
 app.get('/data', (req, res) => {
   const dataPath = path.join(__dirname, 'data/data.json');
+  console.log("Reading from:", dataPath); // Debug path
   fs.readFile(dataPath, 'utf8', (err, jsonData) => {
     if (err) {
-      console.error('Failed to read data.json:', err);
-      return res.status(500).json({ error: 'Failed to read data' });
+      console.error('Read error:', err); // Log full error
+      return res.status(500).json({ error: 'Failed to read data', details: err.message });
     }
     res.setHeader('Content-Type', 'application/json');
     res.send(jsonData);
