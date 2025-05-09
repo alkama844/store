@@ -15,11 +15,26 @@
     .form-container input, .form-container textarea { margin-bottom: 15px; }
     .form-container textarea { height: 120px; }
     .message { font-size: 18px; color: red; }
+    .admin-credentials { background: #f9f9f9; padding: 10px; margin: 20px 0; border: 1px solid #ddd; }
+    .copy-btn { margin-left: 10px; cursor: pointer; background: #28a745; border: none; color: white; padding: 5px 10px; border-radius: 4px; }
+    .copy-btn:hover { background: #218838; }
   </style>
 </head>
 <body>
   <h1>Admin Panel - Add New App</h1>
 
+  <!-- Admin Credentials Section -->
+  <div class="admin-credentials">
+    <h2>Admin Login Details:</h2>
+    <p>Email: <span id="admin-email">xojewil570@idoidraw.com</span>
+      <button class="copy-btn" onclick="copyToClipboard('admin-email')">📎 Copy</button>
+    </p>
+    <p>Password: <span id="admin-password">Nafij123</span>
+      <button class="copy-btn" onclick="copyToClipboard('admin-password')">📎 Copy</button>
+    </p>
+  </div>
+
+  <!-- App Form Section -->
   <div class="form-container">
     <h2>Fill in the App Information:</h2>
     <form action="/admin/add-app" method="POST" enctype="multipart/form-data">
@@ -48,11 +63,11 @@
     </form>
   </div>
 
-  <!-- For handling any messages or errors -->
+  <!-- Error Message Display (if any) -->
   <div id="error-message" class="message"></div>
 
   <script>
-    // Copy to clipboard function (for credentials if necessary)
+    // Copy to clipboard function for the credentials
     function copyToClipboard(id) {
       const el = document.getElementById(id);
       navigator.clipboard.writeText(el.innerText);
