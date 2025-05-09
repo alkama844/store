@@ -1,0 +1,18 @@
+{
+  "name": "nafij-app-store",
+  "version": "1.0.0",
+  "description": "Custom app store with admin panel and EJS templating",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["express", "ejs", "app-store", "admin-panel", "nafij"],
+  "author": "Nafij",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "multer": "^1.4.5-lts.1"
+  }
+}
