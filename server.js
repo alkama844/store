@@ -145,19 +145,25 @@ app.get("/", (req, res) => {
   res.render("index", { topApps: apps });
 });
 
-// JSON route
+// JSON route for view data folder
 app.get('/data', (req, res) => {
-  const dataPath = path.join(__dirname, 'data/data.json');
-  console.log("Reading from:", dataPath); // Debug path
-  fs.readFile(dataPath, 'utf8', (err, jsonData) => {
+  const filePath = path.join(__dirname, 'data', 'apps.json');
+  fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
-      console.error('Read error:', err); // Log full error
-      return res.status(500).json({ error: 'Failed to read data', details: err.message });
+      console.error("Error reading apps.json:", err);
+      return res.status(500).json({ error: "Failed to read data" });
     }
-    res.setHeader('Content-Type', 'application/json');
-    res.send(jsonData);
+    try {
+      const apps = JSON.parse(data);
+      res.json(apps);
+    } catch (parseErr) {
+      console.error("Error parsing apps.json:", parseErr);
+      res.status(500).json({ error: "Invalid JSON format" });
+    }
   });
 });
+
+
 //delete route
 app.get('/admin/delete-apps', (req, res) => {
   const dataPath = path.join(__dirname, 'data/data.json');
