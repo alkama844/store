@@ -165,40 +165,52 @@ app.get('/data', (req, res) => {
 
 
 //delete route
+// GET delete apps page
 app.get('/admin/delete-apps', (req, res) => {
-  const dataPath = path.join(__dirname, 'data/data.json');
+  const dataPath = path.join(__dirname, 'data', 'apps.json');
   fs.readFile(dataPath, 'utf8', (err, jsonData) => {
-    if (err) return res.status(500).send('Failed to load app list');
+    if (err) {
+      console.error("Failed to load app list:", err);
+      return res.status(500).send('Failed to load app list');
+    }
     const apps = JSON.parse(jsonData);
     res.render('delete-apps', { apps });
   });
 });
 
+// POST delete app
 app.post('/admin/delete-app', (req, res) => {
   const filename = req.body.filename;
-  const dataPath = path.join(__dirname, 'data/data.json');
+  const dataPath = path.join(__dirname, 'data', 'apps.json');
 
   fs.readFile(dataPath, 'utf8', (err, jsonData) => {
     if (err) return res.status(500).send('Failed to read data');
 
     let apps = JSON.parse(jsonData);
+    const targetApp = apps.find(app => app.appFilename === filename);
+
     apps = apps.filter(app => app.appFilename !== filename);
 
     fs.writeFile(dataPath, JSON.stringify(apps, null, 2), err => {
       if (err) return res.status(500).send('Failed to delete app');
 
-      // Delete static HTML file and icon
-      const htmlPath = path.join(__dirname, 'public', `${filename}.html`);
-      const iconPath = path.join(__dirname, 'public', 'uploads', `${filename}.png`); // Adjust ext if needed
-
+      // Delete static HTML page
+      const htmlPath = path.join(__dirname, 'public', 'apps', `${filename}.html`);
       fs.unlink(htmlPath, () => {});
-      fs.unlink(iconPath, () => {});
+
+      // Delete app icon if available
+      if (targetApp && targetApp.appIcon) {
+        const iconFileName = path.basename(targetApp.appIcon);
+        const iconPath = path.join(__dirname, 'public', 'uploads', iconFileName);
+        fs.unlink(iconPath, () => {});
+      }
 
       res.redirect('/admin/delete-apps');
     });
   });
 });
-        
+
+
          
 // Start server
 app.listen(PORT, () => {
