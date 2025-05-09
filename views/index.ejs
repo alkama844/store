@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My App Store</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f4f4f4;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .search-bar {
+      max-width: 500px;
+      margin: 0 auto 30px auto;
+      display: flex;
+    }
+    .search-bar input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px 0 0 6px;
+      outline: none;
+    }
+    .search-bar button {
+      padding: 12px 20px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 0 6px 6px 0;
+      cursor: pointer;
+    }
+    .search-bar button:hover {
+      background-color: #0056b3;
+    }
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .app-card {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: 0.2s;
+    }
+    .app-card:hover {
+      transform: scale(1.02);
+    }
+    .app-card img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+    .app-card h3 {
+      font-size: 18px;
+      margin: 10px 0 5px;
+    }
+    .app-card p {
+      margin: 5px 0;
+      color: #666;
+    }
+    .app-card a {
+      text-decoration: none;
+      color: white;
+      background: #007bff;
+      padding: 8px 14px;
+      border-radius: 5px;
+      display: inline-block;
+      margin-top: 10px;
+    }
+    .app-card a:hover {
+      background: #0056b3;
+    }
+    .no-apps {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 50px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>My App Store</h1>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search apps by name..." oninput="filterApps()" />
+    <button onclick="filterApps()">Search</button>
+  </div>
+
+  <% if (topApps.length > 0) { %>
+    <div class="apps-grid" id="appsGrid">
+      <% topApps.forEach(app => { %>
+        <div class="app-card" data-name="<%= app.appName.toLowerCase() %>">
+          <img src="<%= app.appIcon %>" alt="<%= app.appName %> icon">
+          <h3><%= app.appName %></h3>
+          <p><%= app.appCategory %></p>
+          <p><%= app.appDownloads %> downloads</p>
+          <a href="/apps/<%= app.appFilename %>.html">View</a>
+        </div>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <div class="no-apps">There are no apps 😉😺</div>
+  <% } %>
+
+  <script>
+    function filterApps() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.app-card');
+      let found = false;
+      cards.forEach(card => {
+        const name = card.getAttribute('data-name');
+        const visible = name.includes(input);
+        card.style.display = visible ? 'block' : 'none';
+        if (visible) found = true;
+      });
+
+      document.querySelector('.no-apps')?.remove();
+      if (!found && cards.length > 0) {
+        const message = document.createElement('div');
+        message.className = 'no-apps';
+        message.textContent = 'No matching apps found 😉😺';
+        document.body.appendChild(message);
+      }
+    }
+  </script>
+</body>
+</html>
