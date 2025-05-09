@@ -10,28 +10,15 @@
     input, textarea, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ddd; }
     button { background: #007bff; color: white; cursor: pointer; }
     button:hover { background: #0056b3; }
-    .admin-credentials { background: #f9f9f9; padding: 10px; margin: 20px 0; border: 1px solid #ddd; }
-    .admin-credentials p { margin: 0; display: flex; justify-content: space-between; align-items: center; }
-    .copy-btn { margin-left: 10px; cursor: pointer; background: #28a745; border: none; color: white; padding: 5px 10px; border-radius: 4px; }
-    .copy-btn:hover { background: #218838; }
     .form-container h2 { font-size: 24px; margin-bottom: 20px; }
     .form-container label { display: block; font-weight: bold; margin-bottom: 5px; }
     .form-container input, .form-container textarea { margin-bottom: 15px; }
     .form-container textarea { height: 120px; }
+    .message { font-size: 18px; color: red; }
   </style>
 </head>
 <body>
   <h1>Admin Panel - Add New App</h1>
-
-  <div class="admin-credentials">
-    <h2>Admin Login Details:</h2>
-    <p>Email: <span id="admin-email">xojewil570@idoidraw.com</span>
-      <button class="copy-btn" onclick="copyToClipboard('admin-email')">📎 Copy</button>
-    </p>
-    <p>Password: <span id="admin-password">Nafij123</span>
-      <button class="copy-btn" onclick="copyToClipboard('admin-password')">📎 Copy</button>
-    </p>
-  </div>
 
   <div class="form-container">
     <h2>Fill in the App Information:</h2>
@@ -61,12 +48,31 @@
     </form>
   </div>
 
+  <!-- For handling any messages or errors -->
+  <div id="error-message" class="message"></div>
+
   <script>
+    // Copy to clipboard function (for credentials if necessary)
     function copyToClipboard(id) {
       const el = document.getElementById(id);
       navigator.clipboard.writeText(el.innerText);
       alert('Copied!');
     }
+
+    // Optional: Add client-side validation or error feedback
+    document.querySelector('form').addEventListener('submit', function(event) {
+      let errorMessage = '';
+
+      // Validate fields here, add custom messages if needed
+      if (document.getElementById('appName').value.trim() === '') {
+        errorMessage = 'App name is required.';
+      }
+
+      if (errorMessage) {
+        event.preventDefault(); // Stop form submission
+        document.getElementById('error-message').textContent = errorMessage;
+      }
+    });
   </script>
 </body>
 </html>
