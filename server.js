@@ -93,21 +93,32 @@ app.get("/admin/logout", (req, res) => {
   });
 });
 
+//এডমিন ২ এর জন্য কোড শুরু
+// Middleware to parse form data
+app.use(bodyParser.urlencoded({ extended: false }));
 
-// Route to serve admin2.html if password is correct
+// Serve static files (like admin2.html if needed)
+app.use(express.static(path.join(__dirname)));
+
+// Serve login page
 app.get('/admin2', (req, res) => {
-  const { password } = req.query;
+  res.sendFile(path.join(__dirname, 'login.html'));
+});
+
+// Handle login form
+app.post('/login', (req, res) => {
+  const password = req.body.password;
+
   if (password === ADMIN_PASSWORD) {
-    return res.sendFile(path.join(__dirname, 'public', 'admin2.html'));
+    res.redirect('/admin2.html');
   } else {
-    return res.status(401).send(`
-      <h1>Access Denied</h1>
-      <p>Incorrect password provided.</p>
-      <p>Hint: Try adding <code>?password=nafij%20pro</code> to the URL.</p>
+    res.send(`
+      <h1 class="error">😹😹ভাগ ছাগল😎✅</h1>
+      <a href="/admin2">Try again</a>
     `);
   }
 });
-
+//এডমিন2 এর কোড এর শেষ এখানে
 
 // Add new app route
 app.post("/admin/add-app", isAdmin, upload.single("appIcon"), (req, res) => {
