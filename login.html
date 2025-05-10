@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      padding: 40px;
+      text-align: center;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Enter Admin Password</h1>
+  <form id="login-form">
+    <input type="password" name="password" id="password" placeholder="Enter password..." required />
+    <br>
+    <button type="submit">Login</button>
+  </form>
+  <p id="error-message" class="error"></p>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = document.getElementById('password').value;
+
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `password=${encodeURIComponent(password)}`
+      });
+
+      if (response.redirected) {
+        window.location.href = response.url;
+      } else {
+        const text = await response.text();
+        document.getElementById('error-message').textContent = text || 'Something went wrong.';
+      }
+    });
+  </script>
+</body>
+</html>
