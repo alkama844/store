@@ -94,29 +94,28 @@ app.get("/admin/logout", (req, res) => {
   });
 });
 
-//এডমিন ২ এর জন্য কোড শুরু
-// Serve login page at /admin2
-app.get('/admin2', (req, res) => {
-  res.sendFile(path.join(__dirname, 'login.html')); // file in root
+//database এর জন্য কোড শুরু
+// Serve login page for database access
+app.get('/database', (req, res) => {
+  res.sendFile(path.join(__dirname, 'login.html')); // file is in root
 });
 
-// Handle password check
-app.post('/login', (req, res) => {
+// Handle login submission
+app.post('/database-login', (req, res) => {
   const { password } = req.body;
 
   if (password === ADMIN_PASSWORD) {
-    res.redirect('/admin2-dashboard');
+    res.redirect('/database-dashboard');
   } else {
     res.status(401).send('😹😹ভাগ ছাগল😎✅ Wrong password!');
   }
 });
 
-// Serve admin panel from root
-app.get('/admin2-dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, 'admin2.html')); // file in root
+// Serve the protected database.html
+app.get('/database-dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'database.html'));
 });
-
-//এডমিন2 এর কোড এর শেষ এখানে
+//database এর কোড এর শেষ এখানে
 
 // Add new app route
 app.post("/admin/add-app", isAdmin, upload.single("appIcon"), (req, res) => {
