@@ -103,7 +103,7 @@ app.use(express.static(path.join(__dirname)));
 
 // Serve login page
 app.get('/admin2', (req, res) => {
-  res.sendFile(path.join(__dirname, 'login.html'));
+  res.sendFile(path.join(__dirname, 'login.ejs'));
 });
 
 // Handle login form
