@@ -258,6 +258,10 @@ app.get('/backup', (req, res) => {
   archive.finalize();
 });
 
+// Serve the database page at /database
+app.get('/database', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'database.html'));
+});
          
 // Start server
 app.listen(PORT, () => {
