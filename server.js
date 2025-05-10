@@ -6,7 +6,8 @@ const path = require("path");
 const ejs = require("ejs");
 const session = require("express-session");
 const archiver = require("archiver");
-const ADMIN_PASSWORD = 'nafij pro';
+const ADMIN_PASSWORD = 'nafijpro';
+const bodyParser = require('body-parser');
 const PORT = 3000;
 
 // Set EJS as the view engine
