@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login Info</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 40px 30px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1s ease forwards;
+      transform: translateY(50px);
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .field-group {
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      color: #f8f8f8;
+    }
+
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      background: #ffffff22;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    input {
+      flex: 1;
+      padding: 12px 15px;
+      border: none;
+      font-size: 16px;
+      background: transparent;
+      color: #fff;
+      outline: none;
+    }
+
+    button {
+      padding: 12px 16px;
+      border: none;
+      background: #00d4ff;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #00c2e0;
+    }
+
+    .copied {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #76ff91;
+      animation: bounce 0.5s ease;
+    }
+
+    @keyframes bounce {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>## Admin Login Details</h1>
+
+    <div class="field-group">
+      <label>Email</label>
+      <div class="input-wrapper">
+        <input type="text" id="email" value="xojewil570@idoidraw.com" readonly>
+        <button onclick="copyToClipboard('email', 'emailStatus')">📎</button>
+      </div>
+      <div class="copied" id="emailStatus"></div>
+    </div>
+
+    <div class="field-group">
+      <label>Password</label>
+      <div class="input-wrapper">
+        <input type="text" id="password" value="Nafij123" readonly>
+        <button onclick="copyToClipboard('password', 'passStatus')">📎</button>
+      </div>
+      <div class="copied" id="passStatus"></div>
+    </div>
+  </div>
+
+  <script>
+    function copyToClipboard(inputId, statusId) {
+      const input = document.getElementById(inputId);
+      const status = document.getElementById(statusId);
+      input.select();
+      input.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+
+      status.textContent = "✅ Copied!";
+      setTimeout(() => status.textContent = "", 2000);
+    }
+  </script>
+
+</body>
+  </html>
