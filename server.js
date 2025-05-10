@@ -6,7 +6,7 @@ const path = require("path");
 const ejs = require("ejs");
 const session = require("express-session");
 const archiver = require("archiver");
-
+const ADMIN_PASSWORD = 'nafij pro';
 const PORT = 3000;
 
 // Set EJS as the view engine
@@ -92,6 +92,22 @@ app.get("/admin/logout", (req, res) => {
     res.redirect("/admin");
   });
 });
+
+
+// Route to serve admin2.html if password is correct
+app.get('/admin2', (req, res) => {
+  const { password } = req.query;
+  if (password === ADMIN_PASSWORD) {
+    return res.sendFile(path.join(__dirname, 'public', 'admin2.html'));
+  } else {
+    return res.status(401).send(`
+      <h1>Access Denied</h1>
+      <p>Incorrect password provided.</p>
+      <p>Hint: Try adding <code>?password=nafij%20pro</code> to the URL.</p>
+    `);
+  }
+});
+
 
 // Add new app route
 app.post("/admin/add-app", isAdmin, upload.single("appIcon"), (req, res) => {
