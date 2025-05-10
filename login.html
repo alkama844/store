@@ -6,29 +6,48 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f0f0f0;
+      background: linear-gradient(135deg, #f0f0f0, #dcdcdc);
       padding: 40px;
       text-align: center;
+      animation: fadeIn 1s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     input, button {
-      padding: 10px;
+      padding: 12px;
       margin: 10px;
       font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      transition: all 0.3s ease;
+    }
+    input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 5px #007bff55;
     }
     button {
       background: #007bff;
       color: white;
       border: none;
       cursor: pointer;
-      border-radius: 5px;
     }
     button:hover {
       background: #0056b3;
+      transform: scale(1.05);
     }
     .error {
       color: red;
       font-weight: bold;
       margin-top: 15px;
+      animation: shake 0.3s ease-in-out;
+    }
+    @keyframes shake {
+      0% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      100% { transform: translateX(0); }
     }
   </style>
 </head>
@@ -46,7 +65,7 @@
       e.preventDefault();
       const password = document.getElementById('password').value;
 
-      const response = await fetch('/login', {
+      const response = await fetch('/database-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
@@ -55,7 +74,7 @@
       });
 
       if (response.redirected) {
-        window.location.href = response.url;
+        window.location.href = response.url; // Redirects to /database-dashboard
       } else {
         const text = await response.text();
         document.getElementById('error-message').textContent = text || 'Something went wrong.';
